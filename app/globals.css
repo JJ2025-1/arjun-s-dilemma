@@ -1,0 +1,340 @@
+@import "tailwindcss";
+
+:root {
+  --background: #070709;
+  --foreground: #f4f4f5;
+}
+
+body {
+  background: #070709;
+  color: #f4f4f5;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom scrollbar for dark mythological theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.4);
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes bob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.portrait-bob {
+  animation: bob 4s ease-in-out infinite;
+}
+
+/* Crucial RPG Meter Fill Dynamic Animation */
+.meter-fill {
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Page Entrance Animation */
+@keyframes page-entrance {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-page-entrance {
+  animation: page-entrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Dilemma Card Transition Effects */
+@keyframes dilemma-exit {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes dilemma-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-dilemma-exit {
+  animation: dilemma-exit 0.28s ease-in forwards;
+}
+
+.animate-dilemma-enter {
+  animation: dilemma-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes character-bob {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.01);
+  }
+}
+
+@keyframes combat-float {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.85);
+  }
+  18% {
+    opacity: 1;
+    transform: translateY(0px) scale(1.08);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-24px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-42px) scale(0.92);
+  }
+}
+
+@keyframes ember-rise {
+  0% {
+    transform: translateY(100vh) translateX(0) scale(0.6);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(50vh) translateX(15px) scale(0.85);
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-10vh) translateX(-15px) scale(1.1);
+  }
+}
+
+@keyframes chakra-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes golden-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.25));
+  }
+  50% {
+    filter: drop-shadow(0 0 32px rgba(245, 158, 11, 0.55));
+  }
+}
+
+@keyframes aura-pulse-gold {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.35), inset 0 0 15px rgba(245, 158, 11, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.7), inset 0 0 25px rgba(245, 158, 11, 0.5);
+  }
+}
+
+@keyframes aura-pulse-crimson {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(225, 29, 72, 0.35), inset 0 0 15px rgba(225, 29, 72, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(225, 29, 72, 0.7), inset 0 0 25px rgba(225, 29, 72, 0.5);
+  }
+}
+
+@keyframes dialogue-slide {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sheen-sweep {
+  0% {
+    transform: translateX(-150%) skewX(-25deg);
+  }
+  100% {
+    transform: translateX(250%) skewX(-25deg);
+  }
+}
+
+.animate-float {
+  animation: float-slow 4s ease-in-out infinite;
+}
+
+.animate-character-bob {
+  animation: character-bob 3.8s ease-in-out infinite;
+}
+
+.animate-chakra {
+  animation: chakra-rotate 40s linear infinite;
+}
+
+.animate-glow {
+  animation: golden-glow 3s ease-in-out infinite;
+}
+
+.animate-aura-gold {
+  animation: aura-pulse-gold 3s ease-in-out infinite;
+}
+
+.animate-aura-crimson {
+  animation: aura-pulse-crimson 3s ease-in-out infinite;
+}
+
+.animate-dialogue-slide {
+  animation: dialogue-slide 0.35s ease-out forwards;
+}
+
+.animate-combat-text {
+  animation: combat-float 1.8s ease-out forwards;
+}
+
+/* 3D Golden Bezel utilities */
+.bezel-gold-shadow {
+  box-shadow: 0 0 0 1px rgba(180, 83, 9, 0.5), 0 0 0 3px rgba(245, 158, 11, 0.3),
+    0 15px 40px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(254, 240, 138, 0.25);
+}
+
+.bezel-gold-inner {
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(245, 158, 11, 0.3);
+}
+
+/* RPG tactile button hover sheen */
+.rpg-btn-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.rpg-btn-sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 100%
+  );
+  transform: translateX(-180%) skewX(-20deg);
+  transition: none;
+  pointer-events: none;
+}
+.rpg-btn-sheen:hover::after {
+  animation: sheen-sweep 0.75s ease-out forwards;
+}
+
+/* Custom Golden Volume Slider */
+input[type="range"].gold-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #262626;
+  height: 6px;
+  border-radius: 9999px;
+  outline: none;
+}
+input[type="range"].gold-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fbbf24;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.8);
+  border: 2px solid #78350f;
+}
+input[type="range"].gold-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fbbf24;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.8);
+  border: 2px solid #78350f;
+}
+
+/* Equalizer soundwave bar animations */
+@keyframes soundwave {
+  0%, 100% {
+    height: 4px;
+  }
+  50% {
+    height: 14px;
+  }
+}
+.animate-soundwave-1 {
+  animation: soundwave 0.8s ease-in-out infinite;
+}
+.animate-soundwave-2 {
+  animation: soundwave 0.8s ease-in-out infinite 0.2s;
+}
+.animate-soundwave-3 {
+  animation: soundwave 0.8s ease-in-out infinite 0.4s;
+}
+.animate-soundwave-4 {
+  animation: soundwave 0.8s ease-in-out infinite 0.15s;
+}
+
+/* Crisp HD Image Rendering for Historical Scenes and Character Portraits */
+.image-crisp {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: contrast(1.06) saturate(1.04);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
