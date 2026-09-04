@@ -810,9 +810,10 @@ export default function DharmaKurukshetraGame() {
 
   // Mahabharata Instrumental Music State & Ref
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isMusicPlaying, setIsMusicPlaying] = useState<boolean>(false);
+  const [isMusicPlaying, setIsMusicPlaying] = useState<boolean>(true);
   const [musicVolume, setMusicVolume] = useState<number>(0.65);
   const [isMusicMuted, setIsMusicMuted] = useState<boolean>(false);
+  const userManuallyPausedRef = useRef<boolean>(false);
 
   // Audio Engine Instance
   const soundEngine = useRef<AmbientSoundEngine | null>(null);
@@ -828,13 +829,71 @@ export default function DharmaKurukshetraGame() {
     }
   }, [musicVolume, isMusicMuted]);
 
+  // Autoplay music on initial open, with resilient fallback for browser autoplay restrictions
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.volume = isMusicMuted ? 0 : musicVolume;
+
+    let cleanupListeners: (() => void) | null = null;
+
+    const tryPlay = () => {
+      if (userManuallyPausedRef.current) return;
+      if (!audioRef.current) return;
+
+      audioRef.current.volume = isMusicMuted ? 0 : musicVolume;
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsMusicPlaying(true);
+            if (cleanupListeners) {
+              cleanupListeners();
+              cleanupListeners = null;
+            }
+          })
+          .catch(() => {
+            // Autoplay blocked by browser policy without prior interaction.
+            // Listeners will trigger playback on first user gesture.
+          });
+      }
+    };
+
+    // Attempt immediate playback on mount
+    tryPlay();
+
+    // Fallback: start music on very first user gesture anywhere on screen
+    const onFirstInteraction = () => {
+      if (userManuallyPausedRef.current) return;
+      tryPlay();
+    };
+
+    const interactionEvents = ["click", "pointerdown", "keydown", "touchstart"];
+    cleanupListeners = () => {
+      interactionEvents.forEach((evt) => {
+        window.removeEventListener(evt, onFirstInteraction);
+      });
+    };
+
+    interactionEvents.forEach((evt) => {
+      window.addEventListener(evt, onFirstInteraction, { passive: true });
+    });
+
+    return () => {
+      if (cleanupListeners) cleanupListeners();
+    };
+  }, []);
+
   // Toggle Mahabharata Instrumental Music
   const toggleMusic = () => {
     if (!audioRef.current) return;
     if (isMusicPlaying) {
+      userManuallyPausedRef.current = true;
       audioRef.current.pause();
       setIsMusicPlaying(false);
     } else {
+      userManuallyPausedRef.current = false;
       audioRef.current.volume = isMusicMuted ? 0 : musicVolume;
       audioRef.current
         .play()
@@ -870,11 +929,19 @@ export default function DharmaKurukshetraGame() {
 
   const handleStartGame = () => {
     soundEngine.current?.playChime(587);
+    if (!userManuallyPausedRef.current && audioRef.current && audioRef.current.paused) {
+      audioRef.current.volume = isMusicMuted ? 0 : musicVolume;
+      audioRef.current.play().then(() => setIsMusicPlaying(true)).catch(() => {});
+    }
     setGameStage("dilemma_engine");
   };
 
   const handleSelectChampion = (champion: ChampionProfile) => {
     soundEngine.current?.playChime(660);
+    if (!userManuallyPausedRef.current && audioRef.current && audioRef.current.paused) {
+      audioRef.current.volume = isMusicMuted ? 0 : musicVolume;
+      audioRef.current.play().then(() => setIsMusicPlaying(true)).catch(() => {});
+    }
     setChosenChampion(champion);
     // Apply starting karmic affinity bonus
     setDharma(Math.max(15, Math.min(85, 50 + champion.startingBonus.dharma)));
@@ -1131,6 +1198,14 @@ export default function DharmaKurukshetraGame() {
         src="/audio/mahabharata_theme.mp3"
         loop
         preload="auto"
+        autoPlay
+        playsInline
+        onPlay={() => setIsMusicPlaying(true)}
+        onPause={() => {
+          if (userManuallyPausedRef.current) {
+            setIsMusicPlaying(false);
+          }
+        }}
       />
 
       {/* 2. Global Persistent Top-Right Music Controller Widget (Volume, Play/Pause, Mute) */}
